@@ -79,6 +79,7 @@ celerybeat-schedule
 celerybeat.pid
 cover/
 coverage.xml
+credentials.txt
 cython_debug/
 data/
 db.sqlite3
