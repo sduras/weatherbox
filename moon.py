@@ -1,7 +1,6 @@
-from datetime import datetime
 import math
+from datetime import datetime
 
-# Emoji map
 moon_emojis = {
     "New Moon": "🌑",
     "Waxing Crescent": "🌒",
@@ -10,8 +9,9 @@ moon_emojis = {
     "Full Moon": "🌕",
     "Waning Gibbous": "🌖",
     "Last Quarter": "🌗",
-    "Waning Crescent": "🌘"
+    "Waning Crescent": "🌘",
 }
+
 
 def moon_info(date=None):
     if date is None:
@@ -45,7 +45,7 @@ def moon_info(date=None):
 
     return phase_name, moon_day
 
-# Usage
+
 phase, moon_day = moon_info()
 moon_day_number = round(moon_day)
 emoji = moon_emojis.get(phase, "🌚")
