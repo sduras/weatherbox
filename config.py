@@ -1,0 +1,56 @@
+from machine import SoftI2C, Pin
+
+I2C_SH1106_PINS = (Pin(16), Pin(17))
+SH1106_WIDTH = 128
+SH1106_HEIGHT = 64
+SH1106_CONTRAST = 255
+SH1106_FLIP = True
+
+WEATHER_CHECK_INTERVAL = 10
+DISPLAY_UPDATE_INTERVAL = 5
+
+WIFI_RETRY_ATTEMPTS = 5
+WIFI_RETRY_DELAY = 5
+NTP_SYNC_INTERVAL_SECONDS = 7 * 24 * 60 * 60
+CLOCK_DISPLAY_DURATION_SECONDS = 60
+FORECAST_DISPLAY_DURATION_SECONDS = 10
+
+
+COMFORT_PRESSURE = 760
+PRESSURE_TOLERANCE = 10
+WEATHER_CHECK_INTERVAL = 2
+DISPLAY_UPDATE_INTERVAL = 5
+BLINK_INTERVAL_MS = 100
+
+
+RTC_I2C = SoftI2C(scl=Pin(19), sda=Pin(18))
+
+BME280_SCL = 5
+BME280_SDA = 4
+
+DS18X20_PIN = 15
+TEMP_MIN = 20  # °C
+TEMP_MAX = 27  # °C
+HUM_MIN = 30  # %
+HUM_MAX = 60  # %
+PRESSURE_MIN = 1007  # hPa
+PRESSURE_MAX = 1029  # hPa
+
+NTP_SERVER = "pool.ntp.org"
+LVIV_TIMEZONE_OFFSET_SECONDS_STANDARD = 2 * 3600
+LVIV_TIMEZONE_OFFSET_SECONDS_DST = 3 * 3600
+
+# -----------------------------------------------------------------
+
+WEATHER_API_URL = "https://api.open-meteo.com/v1/dwd-icon"
+WIFI_RETRY_LIMIT = 30
+FORECAST_INTERVAL = 3600
+
+# -----------------------------------------------------------------
+
+RED_LED_PIN = 0
+GREEN_LED_PIN = 1
+BLUE_LED_PIN = 2
+LED_FREQ = 1000
+
+# -----------------------------------------------------------------
