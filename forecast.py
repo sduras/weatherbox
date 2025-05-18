@@ -1,5 +1,3 @@
-# forecast.py
-
 import gc
 import json
 
@@ -89,9 +87,7 @@ def get_tomorrow_weather_code():
                 and "weather_code" in weather_data["daily"]
                 and len(weather_data["daily"]["weather_code"]) > 1
             ):
-                tomorrow_weather_code = weather_data["daily"]["weather_code"][
-                    1
-                ]
+                tomorrow_weather_code = weather_data["daily"]["weather_code"][1]
                 return tomorrow_weather_code
             else:
                 print("Error: Could not find tomorrow's weather code in the response.")
@@ -149,7 +145,7 @@ def display_forecast(bitmap_data):
 
     oled.fill(0)
     font_writer = writer.Writer(oled, smallfont)
-    font_writer.set_textpos(35, 1)
+    font_writer.set_textpos(41, 1)
     font_writer.printstring("3ABTPA")
     start_x = (128 - 55) // 2
     start_y = (64 - 39) // 2

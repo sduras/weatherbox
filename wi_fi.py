@@ -1,5 +1,3 @@
-# wi_fi.py
-
 import time
 
 import network

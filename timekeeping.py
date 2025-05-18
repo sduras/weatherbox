@@ -1,5 +1,3 @@
-# timekeeping.py
-
 import socket
 import struct
 import time
@@ -112,23 +110,20 @@ def get_rtc_time():
 
 
 def set_rtc_time(year, month, day, hour, minute, second, weekday):
-    rtc.datetime(
-        (year, month, day, weekday + 1, hour, minute, second, 0)
-    )
+    rtc.datetime((year, month, day, weekday + 1, hour, minute, second, 0))
 
 
 # if __name__ == "__main__":
 #     i2c = SoftI2C(scl=Pin(19), sda=Pin(18))
 #     rtc_test = urtc.DS3231(i2c)
-# 
+#
 #     print("[Timekeeping - Test] Current RTC time:", rtc_test.datetime())
 #     print("[Timekeeping - Test] Attempting NTP sync...")
 #     if sync_rtc_from_ntp("Europe/Lviv"):
 #         print("[Timekeeping - Test] RTC time after sync:", rtc_test.datetime())
 #     else:
 #         print("[Timekeeping - Test] NTP sync failed, RTC time unchanged.")
-# 
+#
 #     utc_now = time.time()
 #     print(f"[Timekeeping - Test] UTC Timestamp: {utc_now}")
 #     print(f"[Timekeeping - Test] Is DST in Lviv now? {is_lviv_dst(utc_now)}")
-

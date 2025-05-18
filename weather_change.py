@@ -1,5 +1,3 @@
-# weather_change.py
-
 from local_sensors import get_latest_observation
 
 weather_history = []

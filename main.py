@@ -1,26 +1,15 @@
-
 import time
 
 import forecast
 import timekeeping
 import wi_fi
-from config import (
-    BLINK_INTERVAL_MS,
-    CLOCK_DISPLAY_DURATION_SECONDS,
-    DISPLAY_UPDATE_INTERVAL,
-    FORECAST_DISPLAY_DURATION_SECONDS,
-    NTP_SYNC_INTERVAL_SECONDS,
-    WEATHER_CHECK_INTERVAL,
-    WIFI_RETRY_ATTEMPTS,
-    WIFI_RETRY_DELAY,
-)
-from display import (
-    display_clock,
-    display_main_loop,
-    display_reading,
-    load_bitmap,
-    set_led_color,
-)
+from config import (BLINK_INTERVAL_MS, CLOCK_DISPLAY_DURATION_SECONDS,
+                    DISPLAY_UPDATE_INTERVAL, FORECAST_DISPLAY_DURATION_SECONDS,
+                    NTP_SYNC_INTERVAL_SECONDS, WEATHER_CHECK_INTERVAL,
+                    WIFI_RETRY_ATTEMPTS, WIFI_RETRY_DELAY)
+from display import (display_clock, display_main_loop, display_moon,
+                     display_reading, load_bitmap, load_moon_bitmap,
+                     set_led_color)
 from weather_change import check_weather_change
 
 
@@ -121,6 +110,12 @@ def main_loop():
                 set_led_color(0, 0, 0.2)
             else:
                 set_led_color(0, 0.2, 0)
+
+            try:
+                display_moon()
+                time.sleep(5)
+            except Exception as e:
+                print(f"Error showing moon phase: {e}")
 
             try:
                 display_main_loop()

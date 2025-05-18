@@ -1,54 +1,55 @@
 import math
-from datetime import datetime
+import time
 
-moon_emojis = {
-    "New Moon": "🌑",
-    "Waxing Crescent": "🌒",
-    "First Quarter": "🌓",
-    "Waxing Gibbous": "🌔",
-    "Full Moon": "🌕",
-    "Waning Gibbous": "🌖",
-    "Last Quarter": "🌗",
-    "Waning Crescent": "🌘",
-}
+from timekeeping import get_ntp_time_utc, get_rtc_time
+from wi_fi import connect_wifi
 
 
-def moon_info(date=None):
-    if date is None:
-        now = datetime.utcnow()
+def moon_info():
+    ntp_timestamp = None
+    if connect_wifi():
+        print("[Main] Wi-Fi connected, attempting to fetch NTP time...")
+        ntp_timestamp = get_ntp_time_utc()
+
+    if ntp_timestamp:
+        current_timestamp = ntp_timestamp
+        print("[Main] Using NTP time.")
     else:
-        now = date
+        print("[Main] NTP unavailable, falling back to RTC.")
+        year, month, day, hour, minute, second, _ = get_rtc_time()
+        current_timestamp = time.mktime(
+            (year, month, day, hour, minute, second, 0, 0, -1)
+        )
 
-    epoch = datetime(2000, 1, 6, 18, 14)
+    epoch_timestamp = time.mktime((2000, 1, 6, 18, 14, 0, 0, 0, -1))
     moon_cycle = 29.53058867
-    delta = now - epoch
-    days = delta.days + delta.seconds / 86400
+    days = (current_timestamp - epoch_timestamp) / 86400
+
     moon_day = math.fmod(days, moon_cycle)
+    if moon_day < 0:
+        moon_day += moon_cycle
     phase = moon_day / moon_cycle
+    moon_day_number = round(moon_day)
 
     if 0 <= phase < 0.125:
-        phase_name = "New Moon"
+        phase_name = "new"
     elif phase < 0.25:
-        phase_name = "Waxing Crescent"
+        phase_name = "waxing-crescent"
     elif phase < 0.375:
-        phase_name = "First Quarter"
+        phase_name = "first-quarter"
     elif phase < 0.5:
-        phase_name = "Waxing Gibbous"
+        phase_name = "waxing-gibbous"
     elif phase < 0.625:
-        phase_name = "Full Moon"
+        phase_name = "full"
     elif phase < 0.75:
-        phase_name = "Waning Gibbous"
+        phase_name = "waning-gibbous"
     elif phase < 0.875:
-        phase_name = "Last Quarter"
+        phase_name = "last-quarter"
     else:
-        phase_name = "Waning Crescent"
+        phase_name = "waning-crescent"
 
-    return phase_name, moon_day
+    return phase_name, moon_day_number
 
 
-phase, moon_day = moon_info()
-moon_day_number = round(moon_day)
-emoji = moon_emojis.get(phase, "🌚")
-
-print("Current Moon Phase:", phase, emoji)
-print("Moon Day (in cycle):", moon_day_number)
+if __name__ == "__main__":
+    moon_info()

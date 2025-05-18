@@ -1,5 +1,3 @@
-# display.py
-
 import gc
 import time
 
@@ -8,20 +6,12 @@ import sh1106
 import writer
 from machine import PWM, Pin, SoftI2C
 
-from config import (
-    BLUE_LED_PIN,
-    COMFORT_PRESSURE,
-    GREEN_LED_PIN,
-    I2C_SH1106_PINS,
-    PRESSURE_TOLERANCE,
-    RED_LED_PIN,
-    SH1106_CONTRAST,
-    SH1106_FLIP,
-    SH1106_HEIGHT,
-    SH1106_WIDTH,
-)
+from config import (BLUE_LED_PIN, COMFORT_PRESSURE, GREEN_LED_PIN,
+                    I2C_SH1106_PINS, PRESSURE_TOLERANCE, RED_LED_PIN,
+                    SH1106_CONTRAST, SH1106_FLIP, SH1106_HEIGHT, SH1106_WIDTH)
 from fonts import agave, smallfont
 from local_sensors import get_latest_observation
+from moon import moon_info
 
 try:
     i2c = SoftI2C(scl=Pin(I2C_SH1106_PINS[1]), sda=Pin(I2C_SH1106_PINS[0]))
@@ -127,6 +117,47 @@ def display_change(weather_change_info, icon):
         print(f"Error displaying weather change: {e}")
 
 
+def load_moon_bitmap(filename):
+    try:
+        with open(f"/images/{filename}.pbm", "rb") as f:
+            f.readline()
+            f.readline()
+            f.readline()
+            return bytearray(f.read())
+    except Exception as e:
+        print(f"Error loading bitmap '{filename}': {e}")
+        return None
+
+
+phase_name, moon_day_number = moon_info()
+moon_icon = load_moon_bitmap(phase_name)
+
+
+def display_moon():
+    if moon_icon is None:
+        print("Error: No bitmap data to display.")
+        return
+
+    if not isinstance(moon_icon, (bytes, bytearray)):
+        print("Error: Invalid bitmap data type.")
+        return
+
+    try:
+        fbuf = framebuf.FrameBuffer(moon_icon, 55, 55, framebuf.MONO_HLSB)
+        phase_name, moon_day_number = moon_info()
+    except Exception as e:
+        print(f"Error creating FrameBuffer: {e}")
+        return
+
+    oled.fill(0)
+    font_writer = writer.Writer(oled, smallfont)
+    font_writer.set_textpos(45, 1)
+    font_writer.printstring(f"{moon_day_number}/29")
+    start_x = (128 - 55) // 2
+    start_y = (64 - 39) // 2
+    oled.blit(fbuf, start_x, start_y)
+    oled.show()
+    gc.collect()
 
 
 def display_main_loop():
