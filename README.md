@@ -1,8 +1,8 @@
 # weatherbox
 
-a Raspberry Pi Pico and MicroPython-based embedded application designed for a
-small IoT display device that shows real-time weather information, moon phases,
-and forecasts. It connects to Wi-Fi for periodic NTP time synchronization and
-weather updates, visually notifies the user of significant weather changes via
-LEDs, and updates a display with forecast icons, weather alerts, and a digital
-clock.
+An embedded application built with a Raspberry Pi Pico and MicroPython,
+designed for a compact IoT display device. It connects to Wi-Fi
+to periodically synchronize time via NTP and retrieve real-time weather
+data, moon phases, and forecasts. The device features a digital display
+for showing forecast icons, weather alerts, and the current time, and
+uses RGB LEDs to visually alert users of significant weather changes.
